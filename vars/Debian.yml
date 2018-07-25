@@ -1,0 +1,8 @@
+---
+
+__n_bash_install_url: "https://git.io/n-install"
+
+__node_packages:
+    - build-essential
+    - libssl-dev
+    - curl

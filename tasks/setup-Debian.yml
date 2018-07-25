@@ -1,0 +1,29 @@
+---
+- name: Update apt cache
+  apt:
+      update_cache: yes
+      cache_valid_time: 3600
+
+- name: Ensure standard packages are installed
+  apt:
+      name: "{{ item }}"
+      state: present
+  with_items: "{{ node_packages }}"
+
+- name: Download n setup script
+  get_url:
+      url: "{{ n_bash_install_url }}"
+      dest: /tmp/n.sh
+      mode: 0755
+
+- name: Run n setup script
+  shell: N_PREFIX=/etc/n /bin/bash /tmp/n.sh -y -q
+
+- name: Create profile.d script for n
+  blockinfile:
+      create: yes
+      path: /etc/profile.d/n.sh
+      block: |
+          #!/bin/bash
+          export N_PREFIX=/etc/n
+          export PATH=$PATH:/etc/n/bin

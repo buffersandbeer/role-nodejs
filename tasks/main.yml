@@ -1,0 +1,16 @@
+---
+- name: Include OS-specific variables
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: Define standard packages
+  set_fact:
+      node_packages: "{{ __node_packages | list }}"
+  when: node_packages is not defined
+
+- name: Define NVM Setup Bash Script URL
+  set_fact:
+      n_bash_install_url: "{{ __n_bash_install_url }}"
+  when: nvm_bash_install_url is not defined
+
+- name: include os-specific setup
+  include_tasks: "setup-{{ ansible_os_family }}.yml"
