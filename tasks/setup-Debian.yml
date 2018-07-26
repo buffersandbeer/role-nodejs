@@ -27,3 +27,13 @@
           #!/bin/bash
           export N_PREFIX=/etc/n
           export PATH=$PATH:/etc/n/bin
+
+- name: Link nodejs binaries to bin
+  file:
+      src: "/etc/n/bin/{{ item }}"
+      dest: "/bin/{{ item }}"
+      state: link
+  with_items:
+      - npm
+      - node
+      - npx
